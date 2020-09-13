@@ -60,23 +60,31 @@ function trickTinder() {
 	const like = nbButtons === 5 ? buttons[3] : buttons[2];
 
 	// Open profile bio
-	const info = document.getElementsByClassName(infoClassName)[0];
-	if (info) {
-		info.click();
-	}
-	pause(600);
+// 	const info = document.getElementsByClassName(infoClassName)[0];
+// 	if (info) {
+// 		info.click();
+// 	}
+// 	pause(600);
 
-	// Like or deslike depending on validation
-	if (hasValidProfile()) {
-		like.click();
+// 	// Like or deslike depending on validation
+// 	if (hasValidProfile()) {
+// 		like.click();
 
-		const thereIsMatch = isMatch();
-		if (thereIsMatch) {
-			console.log('------------- IT\'S A MATCH ! -------------');
-			thereIsMatch.click();
-		}
-	} else {
-		dislike.click();
+// 		const thereIsMatch = isMatch();
+// 		if (thereIsMatch) {
+// 			console.log('------------- IT\'S A MATCH ! -------------');
+// 			thereIsMatch.click();
+// 		}
+// 	} else {
+// 		dislike.click();
+// 	}
+	
+	like.click();
+
+	const thereIsMatch = isMatch();
+	if (thereIsMatch) {
+		console.log('------------- IT\'S A MATCH ! -------------');
+		thereIsMatch.click();
 	}
 
 	// If reached max likes per day then show modal and get it's content...
