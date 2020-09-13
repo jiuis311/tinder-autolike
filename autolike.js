@@ -86,19 +86,11 @@ function trickTinder() {
 		console.log('------------- IT\'S A MATCH ! -------------');
 		thereIsMatch.click();
 	}
-
+	
 	// If reached max likes per day then show modal and get it's content...
 	// Check if there is any subscription button...
-	if (document.getElementsByClassName('productButton__subscriptionButton').length > 0) {
-		// We get the counter thing
-		const hms = document.getElementsByClassName('Fz($ml)')[0].textContent;
-		// Split it at the colons
-		const a = hms.split(':');
-		// Minutes are worth 60 seconds. Hours are worth 60 minutes. 1 second = 1kmilliseconds.
-		// Genius... rocket science...
-		const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
-
-		return seconds * 1000;
+	if (document.getElementsByTagName('html')[0].innerHTML.search('Mua Tinder') != -1) {
+		return 86400*1000;
 	}
 }
 
@@ -123,16 +115,20 @@ function getRandomPeriod() {
 (function loopSasori() {
 	// A random period between 500ms and 2secs
 	let randomPeriod = getRandomPeriod();
-
+	var btns = document.getElementsByClassName("Pos(r) Z(1)");
+	if (btns.length >= 10) {
+		btns[9].click();
+	}
 	setTimeout(function () {
 		randomPeriod = undefined;
 
 		if (checkTinder()) {
 			const delay = trickTinder();
-
+			console.log(delay);
 			if (delay) {
 				console.log('Too many likes for now, have to wait: ' + delay + ' ms');
 				randomPeriod = delay;
+				console.log(randomPeriod);
 			}
 		} else if (checkOkCupid()) {
 			trickOkCupid();
