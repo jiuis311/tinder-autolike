@@ -36,9 +36,20 @@ function hasValidProfile() {
 	}
 }
 
-function checkTinder() {
-	const base = "https://tinder.com/";
-	return window.location.href.startsWith(base + "app/recs") || window.location.href.startsWith(base + "app/matches");
+function checkUpdateAccount() {
+  if (document.getElementsByTagName('html')[0].innerHTML.search('Không, Cảm Ơn') != -1) {
+		var allBtns = document.getElementsByClassName('button');
+		var closeBtn = allBtns[allBtns.length-1];
+		closeBtn.click();
+	}
+}
+
+function runOutOfLike() {
+  if (document.getElementsByTagName('html')[0].innerHTML.search('Bạn không còn lượt thích nào!') != -1) {
+    console.log("Run out of like in function")
+    return 1;
+  }
+  return 0;
 }
 
 function isMatch() {
@@ -53,32 +64,12 @@ function pause(milliseconds) {
 
 function trickTinder() {
 	const infoClassName = 'focus-button-style';
-	const nbButtons = document.getElementsByClassName("button").length;
-	const buttons = document.getElementsByClassName("button")
+	const mainPage = document.getElementsByClassName("recsPage")[0]
+	const buttons = mainPage.getElementsByClassName("button")
 
-	const dislike = nbButtons === 5 ? buttons[1] : buttons[0];
-	const like = nbButtons === 5 ? buttons[3] : buttons[2];
+	const dislike = buttons[1];
+	const like = buttons[3];
 
-	// Open profile bio
-// 	const info = document.getElementsByClassName(infoClassName)[0];
-// 	if (info) {
-// 		info.click();
-// 	}
-// 	pause(600);
-
-// 	// Like or deslike depending on validation
-// 	if (hasValidProfile()) {
-// 		like.click();
-
-// 		const thereIsMatch = isMatch();
-// 		if (thereIsMatch) {
-// 			console.log('------------- IT\'S A MATCH ! -------------');
-// 			thereIsMatch.click();
-// 		}
-// 	} else {
-// 		dislike.click();
-// 	}
-	
 	like.click();
 
 	const thereIsMatch = isMatch();
@@ -86,20 +77,16 @@ function trickTinder() {
 		console.log('------------- IT\'S A MATCH ! -------------');
 		thereIsMatch.click();
 	}
-	
-	// If reached max likes per day then show modal and get it's content...
-	// Check if there is any subscription button...
-	if (document.getElementsByTagName('html')[0].innerHTML.search('Mua Tinder') != -1) {
-		return 86400*1000;
-	}
-}
 
-function checkOkCupid() {
-	return window.location.href.startsWith("https://www.okcupid.com/doubletake");
-}
-function trickOkCupid() {
-	// Press the like button
-	document.getElementsByClassName('cardactions-action--like')[0].click();
+  // Check if ran out of likes
+  if (runOutOfLike()) {
+    console.log("Run out of like")
+    return 86400*1000;
+  }
+
+  // Check if there is subscription modal
+  checkUpdateAccount()
+
 }
 
 // There is a lot more fun that can be achieved
@@ -122,17 +109,13 @@ function getRandomPeriod() {
 	setTimeout(function () {
 		randomPeriod = undefined;
 
-		if (checkTinder()) {
-			const delay = trickTinder();
-			console.log(delay);
-			if (delay) {
-				console.log('Too many likes for now, have to wait: ' + delay + ' ms');
-				randomPeriod = delay;
-				console.log(randomPeriod);
-			}
-		} else if (checkOkCupid()) {
-			trickOkCupid();
-		}
+    const delay = trickTinder();
+    console.log(delay);
+    if (delay) {
+      console.log('Too many likes for now, have to wait: ' + delay + ' ms');
+      randomPeriod = delay;
+      console.log(randomPeriod);
+    }
 
 		if (!randomPeriod) {
 			loopSasori();
