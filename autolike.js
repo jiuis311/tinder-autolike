@@ -46,8 +46,14 @@ function checkUpdateAccount() {
 
 function runOutOfLike() {
   if (document.getElementsByTagName('html')[0].innerHTML.search('Bạn không còn lượt thích nào!') != -1) {
-    console.log("Run out of like in function")
-    return 1;
+		const hms = document.getElementsByClassName('Fz($ml)')[1].textContent;
+		// Split it at the colons
+		const a = hms.split(':');
+		// Minutes are worth 60 seconds. Hours are worth 60 minutes. 1 second = 1kmilliseconds.
+		// Genius... rocket science...
+		const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
+
+		return (seconds+60) * 1000;
   }
   return 0;
 }
@@ -63,6 +69,16 @@ function pause(milliseconds) {
 }
 
 function trickTinder() {
+
+	// Check if ran out of likes
+	const waitTime = runOutOfLike();
+  if (waitTime) {
+		checkUpdateAccount();
+		return waitTime;
+  }
+	// Check if there is subscription modal
+  checkUpdateAccount();
+
 	const infoClassName = 'focus-button-style';
 	const mainPage = document.getElementsByClassName("recsPage")[0]
 	const buttons = mainPage.getElementsByClassName("button")
@@ -78,15 +94,7 @@ function trickTinder() {
 		thereIsMatch.click();
 	}
 
-  // Check if ran out of likes
-  if (runOutOfLike()) {
-    console.log("Run out of like")
-    return 86400*1000;
-  }
-
-  // Check if there is subscription modal
-  checkUpdateAccount()
-
+	return waitTime;
 }
 
 // There is a lot more fun that can be achieved
@@ -110,11 +118,9 @@ function getRandomPeriod() {
 		randomPeriod = undefined;
 
     const delay = trickTinder();
-    console.log(delay);
     if (delay) {
       console.log('Too many likes for now, have to wait: ' + delay + ' ms');
       randomPeriod = delay;
-      console.log(randomPeriod);
     }
 
 		if (!randomPeriod) {
