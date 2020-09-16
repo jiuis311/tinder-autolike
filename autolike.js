@@ -53,7 +53,7 @@ function runOutOfLike() {
 		// Genius... rocket science...
 		const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
 
-		return (seconds+60) * 1000;
+		return seconds * 1000;
   }
   return 0;
 }
@@ -74,7 +74,7 @@ function trickTinder() {
 	const waitTime = runOutOfLike();
   if (waitTime) {
 		checkUpdateAccount();
-		return waitTime;
+		return waitTime + 60*1000;
   }
 	// Check if there is subscription modal
   checkUpdateAccount();
