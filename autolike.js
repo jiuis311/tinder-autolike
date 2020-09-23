@@ -1,41 +1,3 @@
-
-function hasBlacklistKeywords(bio) {
-	const blacklist = [
-		'ladyboy',
-		'lady boy',
-		'not a lady',
-		'not lady',
-		'not a girl',
-		'not girl',
-		'trans',
-		'shemale',
-		'chubby',
-		//' lb ',
-	];
-
-	for (item of blacklist) {
-		if (bio.toLowerCase().indexOf(item) !== -1) {
-			console.log('skipping profile, matched blacklist keyword ' + item);
-			return true;
-		}
-	}
-
-	return false;
-}
-
-function hasValidProfile() {
-	try {
-		const bioContainer = document.querySelector('.profileCard .profileContent .profileCard__card .BreakWord');
-		if (!bioContainer) return true;
-		const bio = bioContainer.textContent;
-		console.log(bio);
-		return !hasBlacklistKeywords(bio);
-	} catch (e) {
-		// console.log(e);
-		return true; // possible empty bio
-	}
-}
-
 function checkUpdateAccount() {
   if (document.getElementsByTagName('html')[0].innerHTML.search('Không, Cảm Ơn') != -1) {
 		var allBtns = document.getElementsByClassName('button');
@@ -52,6 +14,10 @@ function runOutOfLike() {
 		// Minutes are worth 60 seconds. Hours are worth 60 minutes. 1 second = 1kmilliseconds.
 		// Genius... rocket science...
 		const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
+
+		if (!seconds) {
+			return 12*60*60*1000;
+		}
 
 		return seconds * 1000;
   }
@@ -119,14 +85,17 @@ function getRandomPeriod() {
 
     const delay = trickTinder();
     if (delay) {
-      console.log('Too many likes for now, have to wait: ' + delay + ' ms');
+      console.log('Too many likes for now, have to wait: ' + Math.floor(delay/1000/60/60) + ' hours and ' + Math.floor(delay/1000/60)%60 + ' minutes');
       randomPeriod = delay;
-    }
+		}
 
 		if (!randomPeriod) {
 			loopSasori();
 		} else {
-			setTimeout(loopSasori, randomPeriod);
+			setTimeout(function() {
+				checkUpdateAccount();
+				loopSasori();
+			}, randomPeriod);
 		}
 	}, randomPeriod);
 }());
