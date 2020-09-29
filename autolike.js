@@ -73,6 +73,8 @@ function getRandomPeriod() {
 	return Math.round(Math.random() * (2000 - 500)) + 500;
 }
 
+window.swiped_count = 0;
+
 (function loopSasori() {
 	// A random period between 500ms and 2secs
 	let randomPeriod = getRandomPeriod();
@@ -84,6 +86,7 @@ function getRandomPeriod() {
 		randomPeriod = undefined;
 
     const delay = trickTinder();
+    window.swiped_count += 1;
     if (delay) {
       console.log('Too many likes for now, have to wait: ' + Math.floor(delay/1000/60/60) + ' hours and ' + Math.floor(delay/1000/60)%60 + ' minutes');
       randomPeriod = delay;
