@@ -8,20 +8,27 @@ function checkUpdateAccount() {
 
 function runOutOfLike() {
   if (document.getElementsByTagName('html')[0].innerHTML.search('Bạn không còn lượt thích nào!') != -1) {
-		const hms = document.getElementsByClassName('Fz($ml)')[1].textContent;
-		// Split it at the colons
-		const a = hms.split(':');
-		// Minutes are worth 60 seconds. Hours are worth 60 minutes. 1 second = 1kmilliseconds.
-		// Genius... rocket science...
-		const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
+	const hms = document.getElementsByClassName('Fz($ml)')[1].textContent;
+	// Split it at the colons
+	const a = hms.split(':');
+	// Minutes are worth 60 seconds. Hours are worth 60 minutes. 1 second = 1kmilliseconds.
+	// Genius... rocket science...
+	const seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
 
-		if (!seconds) {
-			return 12*60*60*1000;
-		}
+	if (!seconds) {
+		return 12*60*60*1000;
+	}
 
-		return seconds * 1000;
+	return seconds * 1000;
   }
   return 0;
+}
+
+function swipedAllNearBy() {
+	if (document.getElementsByTagName('html')[0].innerHTML.search('MỞ RA TOÀN CẦU') != -1) {
+		location.reload();	
+	}
+	return 0;
 }
 
 function isMatch() {
@@ -38,12 +45,14 @@ function trickTinder() {
 
 	// Check if ran out of likes
 	const waitTime = runOutOfLike();
-  if (waitTime) {
+	if (waitTime) {
 		checkUpdateAccount();
 		return waitTime + 60*1000;
-  }
+	}
+	
 	// Check if there is subscription modal
-  checkUpdateAccount();
+	checkUpdateAccount();
+	swipedAllNearBy();
 
 	const infoClassName = 'focus-button-style';
 	const mainPage = document.getElementsByClassName("recsPage")[0]
@@ -85,11 +94,11 @@ window.swiped_count = 0;
 	setTimeout(function () {
 		randomPeriod = undefined;
 
-    const delay = trickTinder();
-    window.swiped_count += 1;
-    if (delay) {
-      console.log('Too many likes for now, have to wait: ' + Math.floor(delay/1000/60/60) + ' hours and ' + Math.floor(delay/1000/60)%60 + ' minutes');
-      randomPeriod = delay;
+		const delay = trickTinder();
+		window.swiped_count += 1;
+		if (delay) {
+			console.log('Too many likes for now, have to wait: ' + Math.floor(delay/1000/60/60) + ' hours and ' + Math.floor(delay/1000/60)%60 + ' minutes');
+			randomPeriod = delay;
 		}
 
 		if (!randomPeriod) {
